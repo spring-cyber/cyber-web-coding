@@ -1,0 +1,15 @@
+{
+  "projectPath": "/Users/shiye/cyber-web-oyezone",
+  "packageName": "com.cyber.oyezone.",
+  "domains": [
+    {
+      "domain": "agent",
+      "mappings": [
+        {
+          "tableName": "t_agent",
+          "className": "Agent"
+        }
+      ]
+    }
+  ]
+}
