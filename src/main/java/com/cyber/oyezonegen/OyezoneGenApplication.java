@@ -37,7 +37,8 @@ public class OyezoneGenApplication {
             "status",
             "remark",
             "version",
-    "creator","updator"};
+            "creator",
+            "updator"};
 
 
     private static String jdbcType = "mysql";
@@ -235,23 +236,23 @@ public class OyezoneGenApplication {
         logger.info("Entity: {}", filePath);
 
         // 生成 Pom
-        template = cfg.getTemplate("pom.ftl");
-        content = renderTemplate(template, model);
-        filePath = pomPath + separator + "pom.xml";
-        writeFile(content, filePath);
-        logger.info("Pom: {}", filePath);
+//        template = cfg.getTemplate("pom.ftl");
+//        content = renderTemplate(template, model);
+//        filePath = pomPath + separator + "pom.xml";
+//        writeFile(content, filePath);
+//        logger.info("Pom: {}", filePath);
 
         // 生成 View
         template = cfg.getTemplate("view.ftl");
         content = renderTemplate(template, model);
-        filePath = vuePath + separator + domain + separator + "index.vue";
+        filePath = vuePath + separator + model.get("classname") + separator + "index.vue";
         writeFile(content, filePath);
         logger.info("View: {}", filePath);
 
         // 生成 Modify
         template = cfg.getTemplate("modify.ftl");
         content = renderTemplate(template, model);
-        filePath = vuePath + separator + domain + separator + "modules" + separator + "modify.vue";
+        filePath = vuePath + separator + model.get("classname") + separator + "modules" + separator + "modify.vue";
         writeFile(content, filePath);
         logger.info("Modify: {}", filePath);
     }
