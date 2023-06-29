@@ -6,9 +6,8 @@ import com.cyber.oyezonegen.config.GenConfig;
 import com.cyber.oyezonegen.config.TableMapping;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import java.io.BufferedWriter;
@@ -21,10 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class OyezoneGenApplication {
-
-    private static Logger logger = LoggerFactory.getLogger(OyezoneGenApplication.class);
-
 
     private static String[] noneExitsColumn = {
             "id",
@@ -76,7 +73,7 @@ public class OyezoneGenApplication {
         for (DomainConfig domainCfg: cfg.getDomains()) {
             domain = domainCfg.getDomain();
             packageName = cfg.getPackageName() + domain;
-            logger.info("{} domain code gen, packetName  {}, projectPath {}", domain, packageName, cfg.getProjectPath());
+            log.info("{} domain code gen, packetName  {}, projectPath {}", domain, packageName, cfg.getProjectPath());
             for (TableMapping mapping : domainCfg.getMappings()) {
                 generate.gen(mapping.getClassName(), mapping.getTableName());
             }
@@ -86,13 +83,13 @@ public class OyezoneGenApplication {
 
     public void gen(String className, String tableName) throws Exception {
         if (StringUtils.isEmpty(className) || StringUtils.isEmpty(tableName)) {
-            logger.error("className {} or tableName {} is empty...", className, tableName);
+            log.error("className {} or tableName {} is empty...", className, tableName);
             return;
         }
 
         if (StringUtils.isEmpty(url) || StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)
                 || StringUtils.isEmpty(dbName)) {
-            logger.error("参数设置错误：数据库URL、用户名、密码、数据库名不能为空。");
+            log.error("参数设置错误：数据库URL、用户名、密码、数据库名不能为空。");
             return;
         }
 
@@ -106,27 +103,27 @@ public class OyezoneGenApplication {
             projectFile = projectFile.getParentFile();
         }
         String projectPath = StringUtils.replace(projectFile + "", "houke-cloud-tools", projectName);
-        logger.info("Project Path: {}", projectPath);
+        log.info("Project Path: {}", projectPath);
 
         // 模板文件路径
         String tplPath = projectPath + StringUtils.replace("/src/main/resources/template", "/", separator);
-        logger.info("Template Path: {}", tplPath);
+        log.info("Template Path: {}", tplPath);
 
         // Java文件路径
         String javaPath = cfg.getProjectPath() + StringUtils.replaceEach("/src/main/java/" + StringUtils.lowerCase(packageName), new String[]{"/", "."}, new String[]{separator, separator});
-        logger.info("Java Path: {}", javaPath);
+        log.info("Java Path: {}", javaPath);
 
         // Mybatis Mapper文件路径
         String mapperPath = cfg.getProjectPath() + StringUtils.replace("/src/main/resources/mapper", "/", separator);
-        logger.info("Mapper Path: {}", mapperPath);
+        log.info("Mapper Path: {}", mapperPath);
 
         // VUE文件路径
         String vuePath = cfg.getProjectPath() + StringUtils.replace("/src/main/resources/vue", "/", separator);
-        logger.info("Vue Path: {}", vuePath);
+        log.info("Vue Path: {}", vuePath);
 
         // POM文件路径
         String pomPath = cfg.getProjectPath();
-        logger.info("Pom Path: {}", vuePath);
+        log.info("Pom Path: {}", vuePath);
 
         // 代码模板配置
         Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
@@ -175,28 +172,28 @@ public class OyezoneGenApplication {
         String content = renderTemplate(template, model);
         String filePath = javaPath + separator + "domain" + separator + "entity" + separator  + model.get("ClassName") + ".java";
         writeFile(content, filePath);
-        logger.info("Entity: {}", filePath);
+        log.info("Entity: {}", filePath);
 
         // 生成Dao
         template = cfg.getTemplate("java_mapper.ftl");
         content = renderTemplate(template, model);
         filePath = javaPath + separator +  "domain" + separator + "repository" + separator + model.get("ClassName") + "Mapper.java";
         writeFile(content, filePath);
-        logger.info("Dao: {}", filePath);
+        log.info("Dao: {}", filePath);
 
         // 生成Mapper
         template = cfg.getTemplate("xml_mapper.ftl");
         content = renderTemplate(template, model);
         filePath = mapperPath + separator + model.get("ClassName") + "Mapper.xml";
         writeFile(content, filePath);
-        logger.info("Mapper: {}", filePath);
+        log.info("Mapper: {}", filePath);
 
         // 生成Service
         template = cfg.getTemplate("java_service.ftl");
         content = renderTemplate(template, model);
         filePath = javaPath + separator + "application" + separator + model.get("ClassName") + "Service.java";
         writeFile(content, filePath);
-        logger.info("Service: {}", filePath);
+        log.info("Service: {}", filePath);
 
         // 生成ServiceImpl
         template = cfg.getTemplate("java_service_impl.ftl");
@@ -204,21 +201,21 @@ public class OyezoneGenApplication {
         filePath = javaPath + separator + "application" + separator + "impl" + separator + model.get("ClassName")
                 + "ServiceImpl.java";
         writeFile(content, filePath);
-        logger.info("Dao: {}", filePath);
+        log.info("Dao: {}", filePath);
 
         // 生成Rest
         template = cfg.getTemplate("java_rest.ftl");
         content = renderTemplate(template, model);
         filePath = javaPath + separator  + "presentation" + separator + "rest" + separator + model.get("ClassName") + "Rest.java";
         writeFile(content, filePath);
-        logger.info("controller: {}", filePath);
+        log.info("controller: {}", filePath);
 
         // 生成 Request
         template = cfg.getTemplate("java_request.ftl");
         content = renderTemplate(template, model);
         filePath = javaPath + separator + "domain" + separator + "request" + separator + model.get("ClassName") + "Request.java";
         writeFile(content, filePath);
-        logger.info("Entity: {}", filePath);
+        log.info("Entity: {}", filePath);
 
 
         // 生成 CreateRequest
@@ -226,35 +223,35 @@ public class OyezoneGenApplication {
         content = renderTemplate(template, model);
         filePath = javaPath + separator + "domain" + separator + "request" + separator + "Create" + model.get("ClassName") + "Request.java";
         writeFile(content, filePath);
-        logger.info("Entity: {}", filePath);
+        log.info("Entity: {}", filePath);
 
         // 生成 Request
         template = cfg.getTemplate("java_request_update.ftl");
         content = renderTemplate(template, model);
         filePath = javaPath + separator + "domain" + separator + "request" + separator + "Update" + model.get("ClassName") + "Request.java";
         writeFile(content, filePath);
-        logger.info("Entity: {}", filePath);
+        log.info("Entity: {}", filePath);
 
         // 生成 Pom
 //        template = cfg.getTemplate("pom.ftl");
 //        content = renderTemplate(template, model);
 //        filePath = pomPath + separator + "pom.xml";
 //        writeFile(content, filePath);
-//        logger.info("Pom: {}", filePath);
+//        log.info("Pom: {}", filePath);
 
         // 生成 View
         template = cfg.getTemplate("view.ftl");
         content = renderTemplate(template, model);
         filePath = vuePath + separator + model.get("classname") + separator + "index.vue";
         writeFile(content, filePath);
-        logger.info("View: {}", filePath);
+        log.info("View: {}", filePath);
 
         // 生成 Modify
         template = cfg.getTemplate("modify.ftl");
         content = renderTemplate(template, model);
         filePath = vuePath + separator + model.get("classname") + separator + "modules" + separator + "modify.vue";
         writeFile(content, filePath);
-        logger.info("Modify: {}", filePath);
+        log.info("Modify: {}", filePath);
     }
 
     public static void writeFile(String content, String filePath) {
@@ -266,7 +263,7 @@ public class OyezoneGenApplication {
                 bufferedWriter.close();
                 fileWriter.close();
             } else {
-                logger.info("生成失败，文件已存在！");
+                log.info("生成失败，文件已存在！");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -286,17 +283,17 @@ public class OyezoneGenApplication {
     public static boolean createFile(String descFileName) {
         File file = new File(descFileName);
         if (file.exists()) {
-            logger.debug("文件 " + descFileName + " 已存在!");
+            log.debug("文件 " + descFileName + " 已存在!");
             return false;
         }
         if (descFileName.endsWith(File.separator)) {
-            logger.debug(descFileName + " 为目录，不能创建目录!");
+            log.debug(descFileName + " 为目录，不能创建目录!");
             return false;
         }
         if (!file.getParentFile().exists()) {
             // 如果文件所在的目录不存在，则创建目录
             if (!file.getParentFile().mkdirs()) {
-                logger.debug("创建文件所在的目录失败!");
+                log.debug("创建文件所在的目录失败!");
                 return false;
             }
         }
@@ -304,15 +301,15 @@ public class OyezoneGenApplication {
         // 创建文件
         try {
             if (file.createNewFile()) {
-                logger.debug(descFileName + " 文件创建成功!");
+                log.debug(descFileName + " 文件创建成功!");
                 return true;
             } else {
-                logger.debug(descFileName + " 文件创建失败!");
+                log.debug(descFileName + " 文件创建失败!");
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.debug(descFileName + " 文件创建失败!");
+            log.debug(descFileName + " 文件创建失败!");
             return false;
         }
 
