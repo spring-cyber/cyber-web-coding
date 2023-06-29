@@ -116,12 +116,16 @@ public class OyezoneGenApplication {
         logger.info("Java Path: {}", javaPath);
 
         // Mybatis Mapper文件路径
-        String mapperPath = cfg.getProjectPath() + StringUtils.replace("/src/main/resources/mapper/", "/", separator);
+        String mapperPath = cfg.getProjectPath() + StringUtils.replace("/src/main/resources/mapper", "/", separator);
         logger.info("Mapper Path: {}", mapperPath);
 
         // VUE文件路径
-        String vuePath = cfg.getProjectPath() + StringUtils.replace("/src/main/resources/vue/", "/", separator);
+        String vuePath = cfg.getProjectPath() + StringUtils.replace("/src/main/resources/vue", "/", separator);
         logger.info("Vue Path: {}", vuePath);
+
+        // POM文件路径
+        String pomPath = cfg.getProjectPath();
+        logger.info("Pom Path: {}", vuePath);
 
         // 代码模板配置
         Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
@@ -130,6 +134,7 @@ public class OyezoneGenApplication {
         // 定义模板变量
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("packageName", StringUtils.lowerCase(packageName));
+        model.put("projectName", StringUtils.lowerCase(projectName));
 
         model.put("classname", className.toLowerCase());
         model.put("className", StringUtils.uncapitalize(className));
@@ -229,12 +234,26 @@ public class OyezoneGenApplication {
         writeFile(content, filePath);
         logger.info("Entity: {}", filePath);
 
-        // 生成 Vue
+        // 生成 Pom
+        template = cfg.getTemplate("pom.ftl");
+        content = renderTemplate(template, model);
+        filePath = pomPath + separator + "pom.xml";
+        writeFile(content, filePath);
+        logger.info("Pom: {}", filePath);
+
+        // 生成 View
         template = cfg.getTemplate("view.ftl");
         content = renderTemplate(template, model);
-        filePath = vuePath + separator + model.get("ClassName") + ".vue";
+        filePath = vuePath + separator + domain + separator + "index.vue";
         writeFile(content, filePath);
-        logger.info("Vue: {}", filePath);
+        logger.info("View: {}", filePath);
+
+        // 生成 Modify
+        template = cfg.getTemplate("modify.ftl");
+        content = renderTemplate(template, model);
+        filePath = vuePath + separator + domain + separator + "modules" + separator + "modify.vue";
+        writeFile(content, filePath);
+        logger.info("Modify: {}", filePath);
     }
 
     public static void writeFile(String content, String filePath) {
