@@ -24,7 +24,6 @@ import ${pknService}.${ClassName}Service;
 
 @RestController
 @RequiredArgsConstructor
-@Scope(WebApplicationContext.SCOPE_REQUEST)
 public class ${ClassName}Rest extends AuthingTokenController {
 
 	private final ${ClassName}Service ${className}Service;
