@@ -52,24 +52,9 @@ public class OyezoneGenApplication {
 
     public static void main(String[] args) throws Exception{
         OyezoneGenApplication generate = new OyezoneGenApplication();
-//        String[] classNames = new String[]{"Tenant","Product","Project","Permission","Role","User","UserExtension","Account","UserRole","Dept","ActivityLog"};
-//        String[] tableNames = new String[]{"tenant","product","project","permission","role","user","user_extension","account","user_role","dept","activity_log"};
         String str = Files.readString(Paths.get(generate.getClass().getResource("/table.json").toURI()));
         cfg = JSON.parseObject(str, GenConfig.class);
 
-//        String[] classNames = new String[]{"Agent", "AgentCertification", "AgentCertificationLog","AgentNFT"};
-//        String[] tableNames = new String[]{"t_agent", "t_agent_certification", "t_agent_certification_log", "t_agent_nft"};
-//        try {
-//            if (classNames.length != tableNames.length) {
-//                logger.error("classNames length {} not equal tableNames length {}", classNames.length, tableNames.length);
-//                return;
-//            }
-//            for (int i = 0; i < classNames.length; i++) {
-//                generate.gen(classNames[i], tableNames[i]);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         for (DomainConfig domainCfg: cfg.getDomains()) {
             domain = domainCfg.getDomain();
             packageName = cfg.getPackageName() + domain;
