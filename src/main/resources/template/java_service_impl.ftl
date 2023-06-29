@@ -12,17 +12,17 @@ import ${pknEntity}.${ClassName};
 import ${pknService}.${ClassName}Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ${ClassName}ServiceImpl implements ${ClassName}Service {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger( ${ClassName}ServiceImpl.class );
 
     private final ${ClassName}Mapper ${className}Mapper;
 
@@ -31,7 +31,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     public Integer save(${ClassName} ${className}) {
 
         if( null == ${className} ) {
-            LOGGER.warn("save ${className}, but ${className} is null...");
+            log.warn("save ${className}, but ${className} is null...");
             return 0;
         }
 
@@ -43,7 +43,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     public Integer deleteById(${ClassName} ${className}) {
 
         if( null == ${className} ) {
-            LOGGER.warn("delete ${className}, but ${className} is null  or ${className} id is null...");
+            log.warn("delete ${className}, but ${className} is null  or ${className} id is null...");
             return 0;
         }
 
@@ -55,7 +55,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     public Integer updateById(${ClassName} ${className}) {
 
         if( null == ${className} ) {
-            LOGGER.warn("update ${className}, but ${className} is null  or ${className} id is null...");
+            log.warn("update ${className}, but ${className} is null  or ${className} id is null...");
             return 0;
         }
 
@@ -65,7 +65,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     @Override
     public ${ClassName} selectOne(${ClassName} ${className}) {
         if( null == ${className} ) {
-            LOGGER.warn("select ${className} one, but ${className} is null ...");
+            log.warn("select ${className} one, but ${className} is null ...");
             return null;
         }
         ${className} = ${className}Mapper.selectOne( ${className} );
@@ -78,7 +78,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
         PagingData<${ClassName}> pagingData = new PagingData<>();
 
         if( null == ${className} ) {
-            LOGGER.warn("select ${className} page, but ${className} is null...");
+            log.warn("select ${className} page, but ${className} is null...");
             return pagingData;
         }
 
@@ -86,7 +86,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
         pagingData.setRow( queryCount );
 
         if( queryCount <= 0 ) {
-            LOGGER.info("select ${className} page , but count {} == 0 ...",queryCount);
+            log.info("select ${className} page , but count {} == 0 ...",queryCount);
             return pagingData;
         }
 
@@ -99,7 +99,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     public List<${ClassName}> selectByIndex(${ClassName} ${className}) {
         List<${ClassName}> ${className}s = new ArrayList<>();
         if( null == ${className} ) {
-            LOGGER.warn("select ${className} by index, but ${className} is null ...");
+            log.warn("select ${className} by index, but ${className} is null ...");
             return ${className}s;
         }
 
