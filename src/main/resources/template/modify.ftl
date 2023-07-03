@@ -8,7 +8,7 @@
     :okText="modalState.okText"
     @ok="methods.onSubmit"
   >
-    <g-form
+    <a-form
       ref="formRef"
       name="formName"
       :model="formState"
@@ -17,12 +17,12 @@
     >
       <div class="grid grid-cols-2 gap-x-20px">
     <#list columnList as column>
-        <g-form-item label="${column.columnComment}" name="${column.columnName}">
-          <g-input v-model:value="formState.${column.columnName}" placeholder="请输入"></g-input>
-        </g-form-item>
+        <a-form-item label="${column.columnComment}" name="${column.columnName}">
+          <a-input v-model:value="formState.${column.columnName}" placeholder="请输入"></a-input>
+        </a-form-item>
     </#list>
       </div>
-    </g-form>
+    </a-form>
   </g-modal>
 </template>
 
