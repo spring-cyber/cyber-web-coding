@@ -27,10 +27,10 @@
 </template>
 
 <script setup>
-  import axios from '@/api';
-  import {message} from 'ant-design-vue';
+import axios from '@/api';
+import {message} from 'ant-design-vue';
 
-  const formRef = ref(); // 表单ref
+const formRef = ref(); // 表单ref
 // 弹窗信息
 const modalState = reactive({
   visible: false,

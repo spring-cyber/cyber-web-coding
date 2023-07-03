@@ -33,12 +33,13 @@
 </template>
 
 <script setup>
-  import axios from '@/api';
-  import {message} from 'ant-design-vue';
-  import {changeHistoryState, initHistoryState} from "@/utils/dispose";
-  import GModal from '@/components/global/modal/g-modal.jsx';
+import axios from '@/api';
+import { message } from 'ant-design-vue';
+import { changeHistoryState, initHistoryState } from "@/utils/dispose";
+import Modify from './modules/Modify.vue';
+import GModal from '@/components/global/modal/g-modal.jsx';
 
-  const tableRef = ref(); // 表格ref
+const tableRef = ref(); // 表格ref
 const modifyRef = ref(); // 弹窗ref
 // 表格请求参数
 const queryParams = reactive({
