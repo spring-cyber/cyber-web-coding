@@ -8,24 +8,24 @@
       <g-params :loading="tableState.loading" @search="methods.searchQuery()">
         <#list columnList as column>
           <!-- ${column.columnComment}搜索 -->
-          <g-input
-                  v-model:value="queryParams.${column.columnName}"
-                  placeholder="输入${column.columnComment}搜索..."
-                  @keydown.enter="methods.searchQuery()"
-          ></g-input>
+          <a-input
+            v-model:value="queryParams.${column.columnName}"
+            placeholder="输入${column.columnComment}搜索..."
+            @keydown.enter="methods.searchQuery()"
+          ></a-input>
         </#list>
         <template #right>
-          <g-button type="primary" @click="methods.showModify()">创建</g-button>
+          <a-button type="primary" @click="methods.showModify()">创建</a-button>
         </template>
       </g-params>
     </template>
 
     <g-table
-            ref="tableRef"
-            rowKey="id"
-            v-model:loading="tableState.loading"
-            :columns="tableState.columns"
-            :overlayMenu="tableState.overlayMenu"
+      ref="tableRef"
+      rowKey="id"
+      v-model:loading="tableState.loading"
+      :columns="tableState.columns"
+      :overlayMenu="tableState.overlayMenu"
     ></g-table>
   </g-page-body>
 
