@@ -33,85 +33,89 @@
 </template>
 
 <script setup>
-  import {initHistoryState} from "@/utils/dispose";
+  import axios from '@/api';
+  import {message} from 'ant-design-vue';
+  import {changeHistoryState, initHistoryState} from "@/utils/dispose";
+  import GModal from '@/components/global/modal/g-modal.jsx';
+
   const tableRef = ref(); // 表格ref
-  const modifyRef = ref(); // 弹窗ref
-  // 表格请求参数
-  const queryParams = reactive({
-    ...initHistoryState({
-      <#list columnList as column>
-      ${column.columnName}: undefined,
-      </#list>
-    }),
-  });
-  // 表格信息
-  const tableState = reactive({
-    loading: false,
-    columns: [
-      <#list columnList as column>
-      { title: '${column.columnComment}', dataIndex: "${column.columnName}" },
-      </#list>
-    ],
-    overlayMenu: [
-      {
-        label: "编辑",
-        handler: (record) => methods.showModify(record),
-      },
-      {
-        label: "删除",
-        handler: (record) => methods.delete(record),
-      },
-    ],
-  });
+const modifyRef = ref(); // 弹窗ref
+// 表格请求参数
+const queryParams = reactive({
+  ...initHistoryState({
+    <#list columnList as column>
+    ${column.columnName}: undefined,
+    </#list>
+  }),
+});
+// 表格信息
+const tableState = reactive({
+  loading: false,
+  columns: [
+    <#list columnList as column>
+    { title: '${column.columnComment}', dataIndex: "${column.columnName}" },
+    </#list>
+  ],
+  overlayMenu: [
+    {
+      label: "编辑",
+      handler: (record) => methods.showModify(record),
+    },
+    {
+      label: "删除",
+      handler: (record) => methods.delete(record),
+    },
+  ],
+});
 
-  const methods = {
-    // 搜索表格
-    async searchQuery() {
-      changeHistoryState(queryParams);
-      nextTick(() => {
-        unref(tableRef).searchQuery({
-          url: '/${classname}/search',
-          method: 'get',
-          data: queryParams,
-        });
+const methods = {
+  // 搜索表格
+  async searchQuery() {
+    changeHistoryState(queryParams);
+    nextTick(() => {
+      unref(tableRef).searchQuery({
+        url: '/${classname}/search',
+        method: 'get',
+        data: queryParams,
       });
-    },
-    // 显示弹窗
-    showModify(record) {
-      unref(modifyRef).showModal(record);
-    },
-    delete(record) {
-      GModal.confirm({
-        title: `删除`,
-        icon: 'icon-shanchu',
-        content: `确定要删除吗，删除后将无法恢复！`,
-        okButtonProps: {
-          pattern: 'error',
-        },
-        onOk: () => {
-          return new Promise(async (resolve, reject) => {
-            try {
-              let res = await axios.request({
-                url: '/${classname}',
-                method: 'delete',
-                params: {
-                  id: record.id,
-                }
-              });
-              message.success(res.message);
-              methods.searchQuery();
-              resolve();
-            } catch(error) {
-              console.log('error', error);
-              reject();
-            }
-          });
-        },
-      })
-    },
-  };
+    });
+  },
+  // 显示弹窗
+  showModify(record) {
+    unref(modifyRef).showModal(record);
+  },
+  delete(record) {
+    GModal.confirm({
+      title: `删除`,
+      icon: 'icon-shanchu',
+      content: `确定要删除吗，删除后将无法恢复！`,
+      okButtonProps: {
+        pattern: 'error',
+      },
+      onOk: () => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            let res = await axios.request({
+              url: '/${classname}',
+              method: 'delete',
+              params: {
+                id: record.id,
+              }
+            });
+            message.success(res.message);
+            methods.searchQuery();
+            resolve();
+          } catch(error) {
+            console.log('error', error);
+            reject();
+          }
+        });
+      },
+    })
+  },
+};
 
-  methods.searchQuery();
+methods.searchQuery();
 </script>
 
 <style lang="less" scoped>
