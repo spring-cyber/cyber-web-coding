@@ -39,10 +39,10 @@ public class OyezoneGenApplication {
 
 
     private static String jdbcType = "mysql";
-    private static String url = "jdbc:mysql://127.0.0.1:3306/oyezone?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8";
+    private static String url = "jdbc:mysql://139.9.181.241:13307/cyber_auth?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8";
     private static String userName = "root";
-    private static String password = "root";
-    private static String dbName = "oyezone";
+    private static String password = "STS2022mysql";
+    private static String dbName = "cyber_auth";
     private static String domain;
 
     private static String packageName = "com.cyber." + domain;

@@ -1,13 +1,22 @@
 {
-  "projectPath": "/Users/shiye/cyber-web-oyezone",
-  "packageName": "com.cyber.oyezone.",
+  "projectPath": "E:\\cyber-web-coding",
+  "packageName": "com.cyber.authing.",
   "domains": [
     {
-      "domain": "agent",
+      "domain": "dept",
       "mappings": [
         {
-          "tableName": "t_agent",
-          "className": "Agent"
+          "tableName": "dept",
+          "className": "Dept"
+        }
+      ]
+    },
+    {
+      "domain": "position",
+      "mappings": [
+        {
+          "tableName": "position",
+          "className": "Position"
         }
       ]
     }
