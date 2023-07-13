@@ -3,7 +3,7 @@ package	${pknServiceImpl};
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cyber.domain.entity.PagingResponse;
+import com.cyber.domain.entity.PagingData;
 import ${pknDao}.${ClassName}Mapper;
 import ${pknEntity}.${ClassName};
 import ${pknService}.${ClassName}Service;
@@ -71,25 +71,25 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
 
 
     @Override
-    public PagingResponse<${ClassName}> selectPage(${ClassName} ${className}) {
-        PagingResponse<${ClassName}> pagingData = new PagingResponse<>();
+    public PagingData<${ClassName}> selectPage(${ClassName} ${className}) {
+        PagingData<${ClassName}> PagingData = new PagingData<>();
 
         if( null == ${className} ) {
             log.warn("select ${className} page, but ${className} is null...");
-            return pagingData;
+            return PagingData;
         }
 
         Integer queryCount = ${className}Mapper.selectByIndexCount( ${className} );
-        pagingData.setRow( queryCount );
+        PagingData.setRow( queryCount );
 
         if( queryCount <= 0 ) {
             log.info("select ${className} page , but count {} == 0 ...",queryCount);
-            return pagingData;
+            return PagingData;
         }
 
         List<${ClassName}> ${className}s =  selectByIndex( ${className} );
-        pagingData.setData( ${className}s );
-        return pagingData;
+        PagingData.setData( ${className}s );
+        return PagingData;
     }
 
     @Override

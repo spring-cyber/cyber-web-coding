@@ -1,9 +1,8 @@
 <template>
-  <g-modal
+  <c-modal
     ref="modalRef"
     v-model:visible="modalState.visible"
-    width="976px"
-    :icon="modalState.icon"
+    width="600px"
     :title="modalState.title"
     :okText="modalState.okText"
     @ok="methods.onSubmit"
@@ -16,28 +15,26 @@
       autocomplete="off" layout="vertical"
     >
       <div class="grid grid-cols-2 gap-x-20px">
-    <#list columnList as column>
+<#list columnList as column>
         <a-form-item label="${column.columnComment}" name="${column.columnName}">
           <a-input v-model:value="formState.${column.columnName}" placeholder="请输入"></a-input>
         </a-form-item>
-    </#list>
+</#list>
       </div>
     </a-form>
-  </g-modal>
+  </c-modal>
 </template>
 
 <script setup>
 import axios from '@/api';
-import {message} from 'ant-design-vue';
-
+import { message } from 'ant-design-vue';
 const formRef = ref(); // 表单ref
 // 弹窗信息
 const modalState = reactive({
   visible: false,
   isCreate: true,
-  icon: computed(() => modalState.isCreate ? 'icon-xinjian' : 'icon-bianji'),
-  title: computed(() => modalState.isCreate ? '创建' : '编辑'),
-  okText: computed(() => modalState.isCreate ? '创建' : '编辑'),
+  title: computed(() => modalState.isCreate ? '新建' : '编辑'),
+  okText: computed(() => modalState.isCreate ? '新建' : '确定'),
 });
 // 表单信息
 const formState = reactive({
@@ -63,12 +60,11 @@ const methods = {
         await unref(formRef).validate();
         // 请求添加/修改接口
         let res = await axios.request({
-          url: '/${classname}',
+          url: '${classname}',
           method: modalState.isCreate ? 'post' : 'put',
           data: formState
         });
         message.success(res.message);
-        modalState.visible = false;
         $emit('ok');
         resolve();
       } catch (error) {

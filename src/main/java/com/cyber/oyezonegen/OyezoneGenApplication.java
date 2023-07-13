@@ -234,7 +234,7 @@ public class OyezoneGenApplication {
         // 生成 Modify
         template = cfg.getTemplate("modify.ftl");
         content = renderTemplate(template, model);
-        filePath = vuePath + separator + model.get("classname") + separator + "modules" + separator + "modify.vue";
+        filePath = vuePath + separator + model.get("classname") + separator + "modules" + separator + "Modify.vue";
         writeFile(content, filePath);
         log.info("Modify: {}", filePath);
     }

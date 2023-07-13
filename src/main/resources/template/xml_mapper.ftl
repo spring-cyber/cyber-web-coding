@@ -16,7 +16,7 @@
 			${whereColumns}
         </trim>
     </sql>
-	
+
 	<insert id="save" parameterType="${pknEntity}.${ClassName}">
 		insert into ${tableName}
 		(<include refid="saveColumn"/>)
@@ -35,11 +35,11 @@
 			${saveValue}
 		</trim>
 	</sql>
-	
+
 	<delete id="deleteById" parameterType="${pknEntity}.${ClassName}">
 		DELETE FROM ${tableName} WHERE id = ${"#"}{id} and tenant_code = ${"#"}{tenantCode}
 	</delete>
-	
+
 	<update id="updateById" parameterType="${pknEntity}.${ClassName}">
 		update ${tableName}
 		<include refid="updateColumns" />
@@ -48,7 +48,7 @@
 		and tenant_code = ${"#"}{tenantCode}
 		and version = ${"#"}{version}
 	</update>
-	
+
 	<select id="selectOne" resultType="${pknEntity}.${ClassName}" parameterType="${pknEntity}.${ClassName}">
 		SELECT
 		<include refid="baseColumns" />
@@ -57,7 +57,7 @@
             <property name="columnPrefix" value=""/>
         </include>
 	</select>
-	
+
 	<select id="selectByIndexCount" parameterType="${pknEntity}.${ClassName}" resultType="int">
 		SELECT count(1)
 		FROM ${tableName}
@@ -73,7 +73,9 @@
         <include refid="whereClause">
             <property name="columnPrefix" value=""/>
         </include>
-		ORDER BY ${"#"}{sortBy} ${"#"}{sortType}
+		<if test="sortBy != null and sortBy != '' and sortType != null and sortType != '' ">
+			ORDER BY ${"$"}{sortBy} ${"$"}{sortType}
+		</if>
 		LIMIT ${"#"}{offset} , ${"#"}{limit}
 	</select>
 </mapper>

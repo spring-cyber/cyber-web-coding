@@ -4,12 +4,14 @@ import java.util.Date;
 import javax.validation.Valid;
 
 
+import com.cyber.application.controller.AuthingTokenController;
+import com.cyber.domain.constant.HttpResultCode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import com.cyber.domain.entity.DataResponse;
 import com.cyber.domain.entity.IdRequest;
-import com.cyber.domain.entity.PagingResponse;
+import com.cyber.domain.entity.PagingData;
 import com.cyber.domain.entity.Response;
 
 import lombok.RequiredArgsConstructor;
@@ -23,15 +25,15 @@ import ${pknService}.${ClassName}Service;
 
 @RestController
 @RequiredArgsConstructor
-public class ${ClassName}Rest {
+public class ${ClassName}Rest extends AuthingTokenController{
 
 	private final ${ClassName}Service ${className}Service;
 
 	@GetMapping("/${classname}/search")
 	public Response search${ClassName}(@Valid ${ClassName}Request request) {
-		DataResponse<PagingResponse<${ClassName}>> response = new DataResponse<>();
+		DataResponse<PagingData<${ClassName}>> response = new DataResponse<>();
         ${ClassName}  ${classname} = request.toEvent(request.getTenantCode());
-		PagingResponse<${ClassName}> ${className}Page = ${className}Service.selectPage(${classname});
+		PagingData<${ClassName}> ${className}Page = ${className}Service.selectPage(${classname});
 		response.setData(${className}Page);
 		return response;
 	}
@@ -52,7 +54,7 @@ public class ${ClassName}Rest {
 
 	@PostMapping("/${classname}")
 	public Response save${ClassName}(@RequestBody @Valid Create${ClassName}Request request) {
-	    ${ClassName}  ${classname} = request.toEvent(AuthenticationUtil.getUserCode(),request.getTenantCode());
+	    ${ClassName}  ${classname} = request.toEvent(getSessionId(),request.getTenantCode());
 
 		int result = ${className}Service.save(${classname});
 		if (result < 1) {
@@ -63,7 +65,7 @@ public class ${ClassName}Rest {
 
 	@PutMapping("/${classname}")
 	public Response update${ClassName}(@RequestBody @Valid Update${ClassName}Request request) {
-	    ${ClassName}  ${classname} = request.toEvent(AuthenticationUtil.getUserCode(),request.getTenantCode());
+	    ${ClassName}  ${classname} = request.toEvent(getSessionId(),request.getTenantCode());
 		int result = ${className}Service.updateById(${classname});
 		if (result < 1) {
 			return Response.fail(HttpResultCode.SERVER_ERROR);
@@ -77,7 +79,7 @@ public class ${ClassName}Rest {
 		${className}.setId(idRequest.getId());
 
 		${className}.setTenantCode(idRequest.getTenantCode());
-		${className}.setUpdator(AuthenticationUtil.getUserCode());
+		${className}.setUpdator(getSessionId());
         ${className}.setUpdateTime(new Date());
 
 		int result = ${className}Service.deleteById(${className});
