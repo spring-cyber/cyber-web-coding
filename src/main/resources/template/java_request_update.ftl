@@ -2,7 +2,7 @@ package ${pknRequest};
 
 import java.util.Date;
 import org.springframework.beans.BeanUtils;
-import com.cyber.domain.entity.IdRequest;
+import com.cyber.domain.entity.OperateEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import ${pknEntity}.${ClassName};
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class Update${ClassName}Request extends IdRequest {
+public class Update${ClassName}Request extends OperateEntity {
 
 	${entityFeilds}
 

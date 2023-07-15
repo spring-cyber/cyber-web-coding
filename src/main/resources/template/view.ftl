@@ -17,8 +17,11 @@
       <a-input
         v-model:value="queryParams.${column.columnName}"
         placeholder="请输入${column.columnComment}搜索..."
+        style="width: 256px"
         @keydown.enter="methods.searchQuery()"
-      ></a-input>
+      >
+        <template #suffix><c-icon icon="cyber-sousuo" size="16" color="#BDBDBD" /></template>
+      </a-input>
 </#list>
     </template>
     <template #right>
@@ -31,8 +34,7 @@
 
 <script setup>
 import { deleteAxios } from '@/api';
-import { message } from 'ant-design-vue';
-import { changeHistoryState, initHistoryState, Modal } from 'cyber-web-ui';
+import { changeHistoryState, initHistoryState } from 'cyber-web-ui';
 import Modify from './modules/Modify.vue';
 const tableRef = ref(); // 表格ref
 const modifyRef = ref(); // 弹窗ref
@@ -66,21 +68,19 @@ const tableState = reactive({
 
 const methods = {
   // 搜索表格
-  async searchQuery() {
+  searchQuery() {
     changeHistoryState(queryParams);
-    // 磁盘列表（PVC列表）
-    nextTick(() => {
-      unref(tableRef).searchQuery({
-        url: '${classname}/search',
-        method: 'get',
-        data: queryParams,
-      });
+    unref(tableRef).searchQuery({
+      url: '${classname}/search',
+      method: 'get',
+      data: queryParams,
     });
   },
   // 显示弹窗
   showModify(record) {
     unref(modifyRef).showModal(record);
   },
+  // 删除
   delete(record) {
     deleteAxios({
       url: '${classname}',
@@ -94,7 +94,9 @@ const methods = {
   },
 };
 
-methods.searchQuery();
+onMounted(() => {
+  methods.searchQuery();
+});
 </script>
 
 <style lang="less" scoped>

@@ -37,7 +37,7 @@
 	</sql>
 
 	<delete id="deleteById" parameterType="${pknEntity}.${ClassName}">
-		DELETE FROM ${tableName} WHERE id = ${"#"}{id} and tenant_code = ${"#"}{tenantCode}
+		DELETE FROM ${tableName} WHERE id = ${"#"}{id}
 	</delete>
 
 	<update id="updateById" parameterType="${pknEntity}.${ClassName}">
@@ -45,7 +45,6 @@
 		<include refid="updateColumns" />
 		, version = version + 1
 		where id = ${"#"}{id}
-		and tenant_code = ${"#"}{tenantCode}
 		and version = ${"#"}{version}
 	</update>
 

@@ -27,6 +27,7 @@
 
 <script setup>
 import axios from '@/api';
+import { required } from '@/utils/rules';
 import { message } from 'ant-design-vue';
 const formRef = ref(); // 表单ref
 // 弹窗信息
@@ -43,7 +44,11 @@ const formState = reactive({
 </#list>
 });
 // 表单校验规则
-const rules = {};
+const rules = {
+<#list columnList as column>
+  ${column.columnName}: required(),
+</#list>
+};
 const $emit = defineEmits(['ok']);
 const methods = {
   showModal(record) {

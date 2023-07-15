@@ -144,8 +144,8 @@ public class OyezoneGenApplication {
         model.put("pknEntity", packageName + "." +"domain" + "." + "entity");
         model.put("pknRequest", packageName + "." + "domain" + "." + "request");
         model.put("pknDao", packageName +  "." + "domain" + "." + "repository");
-        model.put("pknService", packageName + "." + "application");
-        model.put("pknServiceImpl", packageName + "." + "application.impl");
+        model.put("pknService", packageName + "." + "application.service");
+        model.put("pknServiceImpl", packageName + "." + "application.service.impl");
         model.put("pknRest", packageName + "." + "presentation.rest");
         model.put("pknWeb", packageName + "." + model.get("classname").toString());
 
@@ -176,14 +176,14 @@ public class OyezoneGenApplication {
         // 生成Service
         template = cfg.getTemplate("java_service.ftl");
         content = renderTemplate(template, model);
-        filePath = javaPath + separator + "application" + separator + model.get("ClassName") + "Service.java";
+        filePath = javaPath + separator + "application"+ separator + "service" + separator + model.get("ClassName") + "Service.java";
         writeFile(content, filePath);
         log.info("Service: {}", filePath);
 
         // 生成ServiceImpl
         template = cfg.getTemplate("java_service_impl.ftl");
         content = renderTemplate(template, model);
-        filePath = javaPath + separator + "application" + separator + "impl" + separator + model.get("ClassName")
+        filePath = javaPath + separator + "application"+ separator + "service" + separator + "impl" + separator + model.get("ClassName")
                 + "ServiceImpl.java";
         writeFile(content, filePath);
         log.info("Dao: {}", filePath);
