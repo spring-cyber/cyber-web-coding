@@ -17,7 +17,7 @@
       <div class="grid grid-cols-2 gap-x-20px">
 <#list columnList as column>
         <a-form-item label="${column.columnComment}" name="${column.columnName}">
-          <a-input v-model:value="formState.${column.columnName}" placeholder="请输入"></a-input>
+          <a-input v-model:value="formState.${column.columnName}" placeholder="请输入${column.columnComment}..."></a-input>
         </a-form-item>
 </#list>
       </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import axios from '@/api';
+import axios, { queryDetail } from '@/api';
 import { required } from '@/utils/rules';
 import { message } from 'ant-design-vue';
 const formRef = ref(); // 表单ref
@@ -51,11 +51,12 @@ const rules = {
 };
 const $emit = defineEmits(['ok']);
 const methods = {
-  showModal(record) {
+  async showModal(record) {
     modalState.visible = true;
-    modalState.isCreate = !record;
+    modalState.isCreate = !record?.id;
+    let detail = await methods.queryDetail('${classname}', record);
     Object.keys(formState).forEach(key => {
-      formState[key] = modalState.isCreate ? undefined : record?.[key];
+      formState[key] = detail[key];
     });
   },
   onSubmit() {

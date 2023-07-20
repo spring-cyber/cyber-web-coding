@@ -1,5 +1,5 @@
 <template>
-  <c-page-label title="标题" icon="icon-yingyong">
+  <c-page-label title="标题" icon="icon-yingyong" document-link="javascript:;">
     <template #tips>提示内容。</template>
   </c-page-label>
 
@@ -15,7 +15,7 @@
 <#list columnList as column>	
       <!-- ${column.columnComment}搜索 -->
       <a-input
-        v-model:value="queryParams.${column.columnName}"
+        v-model:value="queryState.${column.columnName}"
         placeholder="请输入${column.columnComment}搜索..."
         style="width: 256px"
         @keydown.enter="methods.searchQuery()"
@@ -25,11 +25,11 @@
 </#list>
     </template>
     <template #right>
-      <a-button type="primary" @click="methods.showModify()">创建</a-button>
+      <a-button type="primary" @click="methods.showModify()">新建</a-button>
     </template>
   </c-table-wrapper>
 
-  <Modify ref="modifyRef" @ok="searchQuery()"></Modify>
+  <Modify ref="modifyRef" @ok="methods.searchQuery()"></Modify>
 </template>
 
 <script setup>
@@ -39,7 +39,7 @@ import Modify from './modules/Modify.vue';
 const tableRef = ref(); // 表格ref
 const modifyRef = ref(); // 弹窗ref
 // 表格请求参数
-const queryParams = reactive({
+const queryState = reactive({
   ...initHistoryState({
 <#list columnList as column>
     ${column.columnName}: undefined,
@@ -69,11 +69,11 @@ const tableState = reactive({
 const methods = {
   // 搜索表格
   searchQuery() {
-    changeHistoryState(queryParams);
+    changeHistoryState(queryState);
     unref(tableRef).searchQuery({
       url: '${classname}/search',
       method: 'get',
-      data: queryParams,
+      params: queryState,
     });
   },
   // 显示弹窗
