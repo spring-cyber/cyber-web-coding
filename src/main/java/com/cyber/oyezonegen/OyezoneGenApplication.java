@@ -39,9 +39,9 @@ public class OyezoneGenApplication {
 
 
     private static String jdbcType = "mysql";
-    private static String url = "jdbc:mysql://139.9.181.241:13307/cyber_auth?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8";
+    private static String url = "jdbc:mysql://192.168.0.11:32265/cyber_auth?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8";
     private static String userName = "root";
-    private static String password = "STS2022mysql";
+    private static String password = "root";
     private static String dbName = "cyber_auth";
     private static String domain;
 
