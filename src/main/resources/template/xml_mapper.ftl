@@ -43,9 +43,7 @@
 	<update id="updateById" parameterType="${pknEntity}.${ClassName}">
 		update ${tableName}
 		<include refid="updateColumns" />
-		, version = version + 1
 		where id = ${"#"}{id}
-		and version = ${"#"}{version}
 	</update>
 
 	<select id="selectOne" resultType="${pknEntity}.${ClassName}" parameterType="${pknEntity}.${ClassName}">
