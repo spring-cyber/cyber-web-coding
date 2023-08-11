@@ -1,42 +1,44 @@
 <template>
-  <c-page-label title="标题" icon="icon-yingyong" document-link="javascript:;">
-    <template #tips>提示内容。</template>
-  </c-page-label>
+  <div>
+    <c-page-label title="标题" icon="cyber-yingyong" document-link="javascript:;">
+      <template #tips>提示内容。</template>
+    </c-page-label>
 
-  <c-table-wrapper
-    rowKey="id"
-    ref="tableRef"
-    v-model:loading="tableState.loading"
-    :columns="tableState.columns"
-    :overlayMenu="tableState.overlayMenu"
-    @search="methods.searchQuery"
-  >
-    <template #collapse>
-<#list columnList as column>	
-      <!-- ${column.columnComment}搜索 -->
-      <a-input
-        v-model:value="queryState.${column.columnName}"
-        placeholder="请输入${column.columnComment}搜索..."
-        style="width: 256px"
-        @keydown.enter="methods.searchQuery()"
-      >
-        <template #suffix><c-icon icon="cyber-sousuo" size="16" color="#BDBDBD" /></template>
-      </a-input>
-</#list>
-    </template>
-    <template #right>
-      <a-button type="primary" @click="methods.showModify()">新建</a-button>
-    </template>
-  </c-table-wrapper>
+    <c-table-wrapper
+            rowKey="id"
+            ref="tableRef"
+            v-model:loading="tableState.loading"
+            :columns="tableState.columns"
+            :overlayMenu="tableState.overlayMenu"
+            @search="methods.searchQuery"
+    >
+      <template #collapse>
+        <#list columnList as column>
+          <!-- ${column.columnComment}搜索 -->
+          <a-input
+                  v-model:value="queryState.${column.columnName}"
+                  placeholder="请输入${column.columnComment}搜索..."
+                  style="width: 256px"
+                  @keydown.enter="methods.searchQuery()"
+          >
+            <template #suffix><c-icon icon="cyber-sousuo" size="16" color="#BDBDBD" /></template>
+          </a-input>
+        </#list>
+      </template>
+      <template #right>
+        <a-button type="primary" @click="methods.showModify()">新建</a-button>
+      </template>
+    </c-table-wrapper>
 
-  <Modify ref="modifyRef" @ok="methods.searchQuery()"></Modify>
+    <Modify ref="modifyRef" @ok="methods.searchQuery()"></Modify>
+  </div>
 </template>
 
 <script setup>
-import { deleteAxios } from '@/api';
-import { changeHistoryState, initHistoryState } from 'cyber-web-ui';
-import Modify from './modules/Modify.vue';
-const tableRef = ref(); // 表格ref
+    import {deleteConfrim} from '@/api';
+    import {changeHistoryState, initHistoryState} from 'cyber-web-ui';
+
+    const tableRef = ref(); // 表格ref
 const modifyRef = ref(); // 弹窗ref
 // 表格请求参数
 const queryState = reactive({
@@ -82,7 +84,10 @@ const methods = {
   },
   // 删除
   delete(record) {
-    deleteAxios({
+    deleteConfrim({
+      content: `是否确认删除“${'$' + '{record.name}'}（${'$' + '{record.code}'}）”？`,
+      value: record.code,
+    }, {
       url: '${classname}',
       method: 'delete',
       params: {

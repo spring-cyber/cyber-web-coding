@@ -26,10 +26,11 @@
 </template>
 
 <script setup>
-import axios, { queryDetail } from '@/api';
-import { required } from '@/utils/rules';
-import { message } from 'ant-design-vue';
-const formRef = ref(); // 表单ref
+  import axios, {queryDetail} from '@/api';
+  import {message} from 'ant-design-vue';
+  import {required} from 'cyber-web-ui';
+
+  const formRef = ref(); // 表单ref
 // 弹窗信息
 const modalState = reactive({
   visible: false,
@@ -54,10 +55,11 @@ const methods = {
   async showModal(record) {
     modalState.visible = true;
     modalState.isCreate = !record?.id;
-    let detail = await methods.queryDetail('${classname}', record);
+    let detail = await queryDetail('${classname}', record);
     Object.keys(formState).forEach(key => {
       formState[key] = detail[key];
     });
+    nextTick(unref(formRef)?.clearValidate);
   },
   onSubmit() {
     return new Promise(async (resolve, reject) => {
