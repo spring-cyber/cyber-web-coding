@@ -26,11 +26,10 @@
 </template>
 
 <script setup>
-  import axios, {queryDetail} from '@/api';
-  import {message} from 'ant-design-vue';
-  import {required} from 'cyber-web-ui';
-
-  const formRef = ref(); // 表单ref
+import axios, { queryDetail } from '@/api';
+import { message } from 'ant-design-vue';
+import { required } from 'cyber-web-ui';
+const formRef = ref(); // 表单ref
 // 弹窗信息
 const modalState = reactive({
   visible: false,
