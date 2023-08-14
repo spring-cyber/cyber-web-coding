@@ -13,7 +13,7 @@
       @search="methods.searchQuery"
     >
       <template #collapse>
-  <#list columnList as column>	
+  <#list columnList as column>
         <!-- ${column.columnComment}搜索 -->
         <a-input
           v-model:value="queryState.${column.columnName}"
@@ -85,7 +85,7 @@ const methods = {
   // 删除
   delete(record) {
     deleteConfrim({
-      content: `是否确认删除“${'$' + '{record.name}'}（${'$' + '{record.code}'}）”？`,,
+      content: `是否确认删除“${'$' + '{record.name}'}（${'$' + '{record.code}'}）”？`,
       value: record.code,
     }, {
       url: '${classname}',
